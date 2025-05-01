@@ -60,7 +60,7 @@ public final class MecanumDrive {
         public RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection =
                 RevHubOrientationOnRobot.LogoFacingDirection.UP;
         public RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection =
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
 
         // drive model parameters
         public double inPerTick = 1;
@@ -124,7 +124,7 @@ public final class MecanumDrive {
         public final Encoder leftFront, leftBack, rightBack, rightFront;
         public final IMU imu;
 
-        private int lastLeftFrontPos, lastLeftBackPos, lastRightBackPos, lastRightFrontPos;
+        private int lastleftFrontPos, lastLeftBackPos, lastRightBackPos, lastRightFrontPos;
         private Rotation2d lastHeading;
         private boolean initialized;
         private Pose2d pose;
@@ -170,7 +170,7 @@ public final class MecanumDrive {
             if (!initialized) {
                 initialized = true;
 
-                lastLeftFrontPos = leftFrontPosVel.position;
+                lastleftFrontPos = leftFrontPosVel.position;
                 lastLeftBackPos = leftBackPosVel.position;
                 lastRightBackPos = rightBackPosVel.position;
                 lastRightFrontPos = rightFrontPosVel.position;
@@ -183,7 +183,7 @@ public final class MecanumDrive {
             double headingDelta = heading.minus(lastHeading);
             Twist2dDual<Time> twist = kinematics.forward(new MecanumKinematics.WheelIncrements<>(
                     new DualNum<Time>(new double[]{
-                            (leftFrontPosVel.position - lastLeftFrontPos),
+                            (leftFrontPosVel.position - lastleftFrontPos),
                             leftFrontPosVel.velocity,
                     }).times(PARAMS.inPerTick),
                     new DualNum<Time>(new double[]{
@@ -200,7 +200,7 @@ public final class MecanumDrive {
                     }).times(PARAMS.inPerTick)
             ));
 
-            lastLeftFrontPos = leftFrontPosVel.position;
+            lastleftFrontPos = leftFrontPosVel.position;
             lastLeftBackPos = leftBackPosVel.position;
             lastRightBackPos = rightBackPosVel.position;
             lastRightFrontPos = rightFrontPosVel.position;
